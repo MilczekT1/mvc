@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  thymeleaf:
+    mode: HTML
+  main:
+    allow-bean-definition-overriding: true
+  application.name: mvc
+  cloud.config:
+    enabled: true
+    fail-fast: true
+    retry.max-attempts: 10
+    username: ${CONFIG_SERVER_BA_USERNAME}
+    password: ${CONFIG_SERVER_BA_PASSWORD}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <title>Jar</title>
+</head>
+<body>
+<center>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Budget</a>
+      <li class="nav-item">
+        <a th:href="@{https://konradboniecki.com.pl/budget/profile}" class="nav-link">Profile</a>
+      </li>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Management
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a th:href="@{https://konradboniecki.com.pl/budget/family}" th:text="#{commons.familyPanel}"
+                     class="dropdown-item"/></li>
+              <br/>
+              <li><a th:href="@{https://konradboniecki.com.pl/budget/manage}" th:text="#{commons.budgetPanel}"
+                     class="dropdown-item"/></li>
+              <br/>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <hr/>
+
+
+  <p th:text="#{jarCreationForm.instructions}"></p>
+  <form th:action="@{https://konradboniecki.com.pl/budget/manage/create-jar}" th:object="${newJarCreationForm}"
+        method="POST">
+    <div>
+      <p th:text="#{jarCreationForm.jarName}"></p>
+      <input type="text" th:field="*{jarName}"/></br>
+      <span th:if="${#fields.hasErrors('jarName')}" th:errors="*{jarName}"></span>
+      <p th:text="#{jarCreationForm.capacity}"></p>
+      <input type="text" th:field="*{capacity}"/></br>
+      <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>
+    </div>
+    <input type="submit" th:value="#{jarCreationForm.newJarSubmitButton}" class="btn btn-success"/>
+  </form>
+  <hr/>
+</center>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+</body>
+</html>

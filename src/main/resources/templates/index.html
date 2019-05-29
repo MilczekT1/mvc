@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Budget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<body>
+<center>
+  <span sec:authorize="!isAuthenticated()">
+    <a th:href="@{https://konradboniecki.com.pl/register}" th:text="#{commons.register}"></a>
+    <a th:href="@{https://konradboniecki.com.pl/login}" th:text="#{commons.login}"></a>
+    <br/>
+  </span>
+  <p th:text="#{index.greeting}"></p>
+  <span sec:authorize="isAuthenticated()">
+        <p th:inline="text">[[${#httpServletRequest.remoteUser}]]</p>
+  </span>
+  <hr>
+  <h1><a th:href="@{https://konradboniecki.com.pl/budget/home}" th:text="#{index.budget}"></a></h1>
+</center>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+</body>
+</html>
