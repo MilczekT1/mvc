@@ -66,6 +66,9 @@ jobs:
             - ~/.m2
           key: m2-{{ checksum "pom.xml" }}
       - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -s .circleci/settings.xml
+      - run:
           name: Build and push docker image
           command: |
             VERSION=$(mvn help:evaluate -s .circleci/settings.xml -Dexpression=project.version -q -DforceStdout)
