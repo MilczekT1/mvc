@@ -1,4 +1,4 @@
-FROM konradboniecki/budget:java-base-image-290
+FROM konradboniecki/budget:java-base-image-latest
 ENV JAVA_TOOL_OPTIONS \
     "-Dspring.config.import=configserver:http://config-server:8888" \
     "-Dspring.cloud.config.username=${CONFIG_SERVER_BA_USERNAME}" \
