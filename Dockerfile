@@ -7,5 +7,6 @@ ARG ARTIFACT=mvc-*.jar
 ADD /target/$ARTIFACT app.jar
 ENTRYPOINT [ "java", "-jar", \
     "-Djava.security.egd=file:/dev/./urandom ", "app.jar", \
+    "-Dencrypt.key=${CONFIG_ENCRYPT_KEY}", \
     "--spring.profiles.active=default" \
 ]
