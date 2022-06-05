@@ -2,8 +2,8 @@ deployment_branch_filter: &deployment_branch_filter
   filters:
     branches:
       only:
-        - develop
         - master
+        - develop
         - /feature.*/
         - /bugfix.*/
 docker_java_11: &docker_java_11
@@ -19,7 +19,8 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build:
+      - build
+      - sonar-scanning:
           context: SonarCloud
       - approve_deployment:
           type: approval
@@ -66,9 +67,6 @@ jobs:
             - ~/.m2
           key: m2-{{ checksum "pom.xml" }}
       - run:
-          name: Analyze on SonarCloud
-          command: mvn verify sonar:sonar -s .circleci/settings.xml
-      - run:
           name: Build and push docker image
           command: |
             VERSION=$(mvn help:evaluate -s .circleci/settings.xml -Dexpression=project.version -q -DforceStdout)
@@ -99,6 +97,17 @@ jobs:
           root: ~/repo
           paths:
             - shared_workspace
+  sonar-scanning:
+    <<: *docker_java_11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - m2-{{ checksum "pom.xml" }}
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -s .circleci/settings.xml
   deploy-to-nexus:
     <<: *docker_java_11
     working_directory: ~/repo
