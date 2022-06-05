@@ -22,15 +22,11 @@ workflows:
       - build
       - sonar-scanning:
           context: SonarCloud
-      - approve_deployment:
-          type: approval
-          requires:
-            - build
-          <<: *deployment_branch_filter
       - pipeline-template/deploy_microservice:
           serviceName: "mvc"
           requires:
-            - approve_deployment
+            - build
+          <<: *deployment_branch_filter
       - deploy-to-nexus-approval:
           type: approval
           requires:
