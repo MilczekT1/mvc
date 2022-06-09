@@ -59,8 +59,8 @@ class ExpenseManagementClientTest {
         // When:
         List<Expense> expenseList = expenseManagementClient.getAllExpensesFromBudgetWithId(budgetId);
         // Then:
-        assertThat(expenseList).isNotNull();
-        assertThat(expenseList).hasSize(2);
+        assertThat(expenseList).isNotNull()
+                .hasSize(2);
         Expense firstElement = expenseList.get(0);
         Expense secondElement = expenseList.get(1);
         Assertions.assertAll(
@@ -85,7 +85,7 @@ class ExpenseManagementClientTest {
         List<Expense> expenseList = expenseManagementClient.getAllExpensesFromBudgetWithId(budgetId);
         // Then:
         assertThat(expenseList).isNotNull();
-        assertThat(expenseList.size()).isZero();
+        assertThat(expenseList).isEmpty();
     }
 
     @Test

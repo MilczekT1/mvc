@@ -296,7 +296,7 @@ class FamilyManagementClientTest {
         // When:
         List<Invitation> invitations = familyManagementClient.findAllInvitationsByFamilyId(familyId);
         // Then:
-        assertThat(invitations.size()).isEqualTo(0);
+        assertThat(invitations.size()).isZero();
     }
 
     @Test
@@ -321,6 +321,7 @@ class FamilyManagementClientTest {
         List<Invitation> invitations = familyManagementClient.findAllInvitationsByFamilyId(familyId);
         // Then:
         assertThat(invitations.size()).isEqualTo(2);
+        assertThat(invitations.contains(firstInvitation)).isTrue();
         assertThat(invitations.contains(firstInvitation)).isTrue();
         assertThat(invitations.contains(secondInvitation)).isTrue();
     }
@@ -372,7 +373,7 @@ class FamilyManagementClientTest {
         // When:
         Optional<Invitation> invitation = familyManagementClient.findInvitationById(id);
         // Then:
-        assertThat(invitation.isPresent()).isTrue();
+        assertThat(invitation).isPresent();
         Assertions.assertAll(
                 () -> assertThat(invitation.get().getId()).isNotNull(),
                 () -> assertThat(UUID.fromString(invitation.get().getId())).isNotNull(),

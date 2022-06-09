@@ -134,10 +134,9 @@ public class AccountManagementClient {
                     HttpMethod.PUT,
                     httpEntity, String.class, accountId, familyId);
             return responseEntity.getStatusCode() == HttpStatus.OK;
+        } catch (HttpClientErrorException.NotFound e) {
+            log.info("Account with id: {} or family with id: {} not found.", accountId, familyId);
         } catch (HttpClientErrorException e) {
-            if (e instanceof HttpClientErrorException.NotFound) {
-                log.info("Account with id: {} or family with id: {} not found.", accountId, familyId);
-            }
             return false;
         }
     }

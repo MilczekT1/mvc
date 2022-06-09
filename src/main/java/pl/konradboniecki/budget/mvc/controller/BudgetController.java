@@ -18,7 +18,6 @@ import pl.konradboniecki.budget.mvc.service.client.FamilyManagementClient;
 import pl.konradboniecki.budget.mvc.service.client.budgetmanagement.BudgetMgtServiceFacade;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -48,10 +47,10 @@ public class BudgetController {
             return new ModelAndView("redirect:" + gatewayUrl + "/budget/family");
         } else {
             // TODO: Possible family absence
-            Optional<Family> family = familyManagementClient.findFamilyById(acc.getFamilyId());
-            log.info("showing budget for family: {}", family.orElseThrow());
-            List<Jar> jarList = budgetMgtServiceFacade.getAllJarsFromBudgetWithId(family.get().getBudgetId());
-            List<Expense> expenseList = budgetMgtServiceFacade.getAllExpensesFromBudgetWithId(family.get().getBudgetId());
+            Family family = familyManagementClient.findFamilyById(acc.getFamilyId()).orElseThrow();
+            log.info("showing budget for family: {}", family);
+            List<Jar> jarList = budgetMgtServiceFacade.getAllJarsFromBudgetWithId(family.getBudgetId());
+            List<Expense> expenseList = budgetMgtServiceFacade.getAllExpensesFromBudgetWithId(family.getBudgetId());
 
             if (!jarList.isEmpty()) {
                 modelMap.addAttribute("jarList", jarList);
@@ -59,7 +58,7 @@ public class BudgetController {
             if (!expenseList.isEmpty()) {
                 modelMap.addAttribute("expenseList", expenseList);
             }
-            modelMap.addAttribute("budgetId", family.get().getBudgetId());
+            modelMap.addAttribute("budgetId", family.getBudgetId());
             return new ModelAndView(ViewTemplate.BUDGET, modelMap);
         }
     }

@@ -30,7 +30,7 @@ public class JarManagementClient {
 
     @Setter
     @Value("${budget.baseUrl.budgetManagement}")
-    private String BASE_URL;
+    private String gatewayUrl;
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -44,7 +44,7 @@ public class JarManagementClient {
         HttpEntity<Jar> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Jar> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/jars/{jarId}",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/jars/{jarId}",
                     HttpMethod.GET,
                     httpEntity, Jar.class, budgetId, jarId);
             return Optional.ofNullable(responseEntity.getBody());
@@ -60,20 +60,20 @@ public class JarManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<OASJarPage> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/jars",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/jars",
                     HttpMethod.GET,
                     httpEntity, OASJarPage.class, budgetId);
             return mapToJarList(responseEntity.getBody().getItems());
         } catch (HttpClientErrorException e) {
             log.error("error occured during fetch of all jars from budget with id: " + budgetId);
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 
     private List<Jar> mapToJarList(List<OASJar> oasJarList) {
         return oasJarList.stream()
                 .filter(Objects::nonNull)
-                .map((oasJar) ->
+                .map(oasJar ->
                         new Jar()
                                 .setId(oasJar.getId())
                                 .setBudgetId(oasJar.getBudgetId())
@@ -92,7 +92,7 @@ public class JarManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<String> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/jars/{jarId}",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/jars/{jarId}",
                     HttpMethod.DELETE,
                     httpEntity, String.class, budgetId, jarId);
             return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;
@@ -112,7 +112,7 @@ public class JarManagementClient {
 
         try {
             ResponseEntity<Jar> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/jars",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/jars",
                     HttpMethod.POST,
                     httpEntity, Jar.class, budgetId);
             return responseEntity.getBody();
@@ -131,7 +131,7 @@ public class JarManagementClient {
         String jarId = jar.getId();
         try {
             ResponseEntity<Jar> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/jars/{jarId}",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/jars/{jarId}",
                     HttpMethod.PUT,
                     httpEntity, Jar.class, budgetId, jarId);
             return Optional.ofNullable(responseEntity.getBody());

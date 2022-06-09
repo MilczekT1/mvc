@@ -46,18 +46,14 @@ public class MailServiceClient {
     }
 
     public boolean sendFamilyInvitationToNewUser(InvitationToFamily invitationToFamily) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
-        headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
-        HttpEntity<InvitationToFamily> httpEntity = new HttpEntity<>(invitationToFamily, headers);
-
-        ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                gatewayUrl + BASE_PATH + "/family-invitations",
-                HttpMethod.POST,
-                httpEntity, Void.class);
-        return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;
+        return sendFamilyInvitation(invitationToFamily);
     }
 
     public boolean sendFamilyInvitationToExistingUser(InvitationToFamily invitationToFamily) {
+        return sendFamilyInvitation(invitationToFamily);
+    }
+
+    private boolean sendFamilyInvitation(InvitationToFamily invitationToFamily) {
         HttpHeaders headers = defaultPostHTTPHeaders();
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
 

@@ -49,7 +49,7 @@ class JarManagementClientTest {
 
     @BeforeEach
     void setUp() {
-        jarManagementClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        jarManagementClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
     @Test

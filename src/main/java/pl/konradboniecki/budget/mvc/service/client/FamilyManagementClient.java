@@ -178,7 +178,7 @@ public class FamilyManagementClient {
     private List<Invitation> mapToInvitationList(List<OASInvitation> oasInvitation) {
         return oasInvitation.stream()
                 .filter(Objects::nonNull)
-                .map((oasInvitation1) ->
+                .map(oasInvitation1 ->
                     new Invitation()
                             .setId(oasInvitation1.getId())
                             .setFamilyId(oasInvitation1.getFamilyId())
