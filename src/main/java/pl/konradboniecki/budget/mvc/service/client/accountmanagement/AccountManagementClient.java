@@ -139,5 +139,6 @@ public class AccountManagementClient {
         } catch (HttpClientErrorException e) {
             return false;
         }
+        return false;
     }
 }
