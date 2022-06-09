@@ -27,7 +27,7 @@ public class AccountManagementClient {
     private final RestTemplate restTemplate;
     @Setter
     @Value("${budget.baseUrl.accountManagement}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public AccountManagementClient(RestTemplate restTemplate) {
@@ -40,7 +40,7 @@ public class AccountManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Account> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/accounts/" + id + "?findBy=id",
+                    gatewayUrl + BASE_PATH + "/accounts/" + id + "?findBy=id",
                     HttpMethod.GET,
                     httpEntity, Account.class);
             return Optional.of(responseEntity.getBody());
@@ -56,7 +56,7 @@ public class AccountManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Account> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/accounts/" + email + "?findBy=email",
+                    gatewayUrl + BASE_PATH + "/accounts/" + email + "?findBy=email",
                     HttpMethod.GET,
                     httpEntity, Account.class);
             return Optional.of(responseEntity.getBody());
@@ -72,7 +72,7 @@ public class AccountManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(accountToSave, headers);
         try {
             ResponseEntity<Account> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/accounts",
+                    gatewayUrl + BASE_PATH + "/accounts",
                     HttpMethod.POST,
                     httpEntity, Account.class);
             return responseEntity.getBody();
@@ -89,7 +89,7 @@ public class AccountManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<JsonNode> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/accounts/{accountId}/activation-codes",
+                    gatewayUrl + BASE_PATH + "/accounts/{accountId}/activation-codes",
                     HttpMethod.POST,
                     httpEntity, JsonNode.class, accountId);
             return responseEntity.getBody().path("activationCode").asText();
@@ -106,18 +106,18 @@ public class AccountManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/accounts/{accountId}/credentials",
+                    gatewayUrl + BASE_PATH + "/accounts/{accountId}/credentials",
                     HttpMethod.GET,
                     httpEntity, Void.class, accountId);
             return responseEntity.getStatusCode() == HttpStatus.OK;
+        } catch (HttpClientErrorException.BadRequest e) {
+            log.info("Password not matched for account with id: " + accountId, e);
+            return false;
+        } catch (HttpClientErrorException.NotFound e) {
+            log.error("Account with id: " + accountId + " not found during password check", e);
+            return false;
         } catch (HttpClientErrorException e) {
-            if (e instanceof HttpClientErrorException.BadRequest) {
-                log.info("Password not matched for account with id: " + accountId, e);
-            } else if (e instanceof HttpClientErrorException.NotFound) {
-                log.error("Account with id: " + accountId + " not found during password check", e);
-            } else {
-                log.error("Failed to validate password, check failed.", e);
-            }
+            log.error("Failed to validate password, check failed.", e);
             return false;
         }
     }
@@ -130,15 +130,15 @@ public class AccountManagementClient {
 
         try {
             ResponseEntity<String> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/accounts/{accountId}/families/{familyId}",
+                    gatewayUrl + BASE_PATH + "/accounts/{accountId}/families/{familyId}",
                     HttpMethod.PUT,
                     httpEntity, String.class, accountId, familyId);
             return responseEntity.getStatusCode() == HttpStatus.OK;
+        } catch (HttpClientErrorException.NotFound e) {
+            log.info("Account with id: {} or family with id: {} not found.", accountId, familyId);
         } catch (HttpClientErrorException e) {
-            if (e instanceof HttpClientErrorException.NotFound) {
-                log.info("Account with id: {} or family with id: {} not found.", accountId, familyId);
-            }
             return false;
         }
+        return false;
     }
 }

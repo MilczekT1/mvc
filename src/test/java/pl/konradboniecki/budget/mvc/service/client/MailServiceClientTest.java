@@ -32,7 +32,7 @@ import static pl.konradboniecki.budget.mvc.service.client.MailServiceClientTest.
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
-public class MailServiceClientTest {
+class MailServiceClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "mail";
     public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
@@ -45,7 +45,7 @@ public class MailServiceClientTest {
 
     @BeforeEach
     void setUp() {
-        mailServiceClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        mailServiceClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
 

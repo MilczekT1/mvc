@@ -29,7 +29,7 @@ public class JarController {
     private BudgetMgtServiceFacade budgetMgtServiceFacade;
     private AccountManagementClient accMgtClient;
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public JarController(BudgetMgtServiceFacade budgetMgtServiceFacade, AccountManagementClient accMgtClient) {
@@ -84,7 +84,7 @@ public class JarController {
                                             @RequestParam("budgetId") String budgetId,
                                             ModelMap modelMap) {
         budgetMgtServiceFacade.removeJarFromBudget(jarId, budgetId);
-        return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.BUDGET, modelMap);
+        return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.BUDGET, modelMap);
     }
 
     @PostMapping("/change-current-amount")
@@ -99,7 +99,7 @@ public class JarController {
             Jar jar = jarOpt.get();
             jar.setCurrentAmount(jar.getCurrentAmount() + amount);
             budgetMgtServiceFacade.updateJar(jar, budgetId);
-            return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.BUDGET, modelMap);
+            return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.BUDGET, modelMap);
         } else {
             return new ModelAndView(ViewTemplate.ERROR_PAGE, modelMap);
         }

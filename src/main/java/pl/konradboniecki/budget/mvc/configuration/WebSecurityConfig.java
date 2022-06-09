@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private SpringAuthenticationProvider authProvider;
 
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage(BASE_URL + "/login")
+                .loginPage(gatewayUrl + "/login")
                 .loginProcessingUrl("/authenticate")
                 .successForwardUrl("/")
                 .permitAll()
@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl(BASE_URL + "/login?logout")
+                .logoutSuccessUrl(gatewayUrl + "/login?logout")
                 .permitAll()
                 .and()
             .exceptionHandling()

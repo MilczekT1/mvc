@@ -29,10 +29,11 @@ import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
 @Service
 public class ExpenseManagementClient {
     private static final String BASE_PATH = "/api/budget-mgt/v1";
+    private static final String MSG_FAILED_TO_SAVE_EXPENSE = "Failed to save expense.";
 
     @Setter
     @Value("${budget.baseUrl.budgetManagement}")
-    private String BASE_URL;
+    private String gatewayUrl;
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -46,20 +47,20 @@ public class ExpenseManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<OASExpensePage> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/expenses",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/expenses",
                     HttpMethod.GET,
                     httpEntity, OASExpensePage.class, budgetId);
             return mapToExpenseList(responseEntity.getBody().getItems());
         } catch (HttpClientErrorException | NullPointerException e) {
             log.error("Error occurred during fetch of all expenses from budget with id: " + budgetId, e);
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 
     private List<Expense> mapToExpenseList(List<OASExpense> oasExpenseList) {
         return oasExpenseList.stream()
                 .filter(Objects::nonNull)
-                .map((oasExpense) ->
+                .map(oasExpense ->
                         new Expense()
                                 .setAmount(oasExpense.getAmount())
                                 .setBudgetId(oasExpense.getBudgetId())
@@ -76,16 +77,16 @@ public class ExpenseManagementClient {
         HttpEntity<Expense> httpEntity = new HttpEntity<>(ex, headers);
         try {
             ResponseEntity<Expense> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/{budgetId}/expenses",
+                    gatewayUrl + BASE_PATH + "/budgets/{budgetId}/expenses",
                     HttpMethod.POST,
                     httpEntity, Expense.class, budgetId);
             return responseEntity.getBody();
         } catch (HttpServerErrorException e) {
-            log.error("Failed to save expense.", e);
-            throw new InternalServerErrorException("Failed to save expense.", e);
+            log.error(MSG_FAILED_TO_SAVE_EXPENSE, e);
+            throw new InternalServerErrorException(MSG_FAILED_TO_SAVE_EXPENSE, e);
         } catch (HttpClientErrorException.BadRequest e) {
-            log.error("Failed to save expense.", e);
-            throw new BadRequestException("Failed to save expense.");
+            log.error(MSG_FAILED_TO_SAVE_EXPENSE, e);
+            throw new BadRequestException(MSG_FAILED_TO_SAVE_EXPENSE);
         }
     }
 
@@ -96,7 +97,7 @@ public class ExpenseManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<String> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH +"/budgets/{budgetId}/expenses/{expenseId}",
+                    gatewayUrl + BASE_PATH +"/budgets/{budgetId}/expenses/{expenseId}",
                     HttpMethod.DELETE,
                     httpEntity, String.class, budgetId, expenseId);
             return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;

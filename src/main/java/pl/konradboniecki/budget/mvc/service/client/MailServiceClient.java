@@ -23,7 +23,7 @@ public class MailServiceClient {
     private final RestTemplate restTemplate;
     @Setter
     @Value("${budget.baseUrl.mail}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public MailServiceClient(RestTemplate restTemplate) {
@@ -39,31 +39,27 @@ public class MailServiceClient {
         HttpEntity<SignUpConfirmation> httpEntity = new HttpEntity<>(signUpConfirmation, headers);
 
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/account-activations",
+                gatewayUrl + BASE_PATH + "/account-activations",
                 HttpMethod.POST,
                 httpEntity, Void.class);
         return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;
     }
 
     public boolean sendFamilyInvitationToNewUser(InvitationToFamily invitationToFamily) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
-        headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
-        HttpEntity<InvitationToFamily> httpEntity = new HttpEntity<>(invitationToFamily, headers);
-
-        ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/family-invitations",
-                HttpMethod.POST,
-                httpEntity, Void.class);
-        return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;
+        return sendFamilyInvitation(invitationToFamily);
     }
 
     public boolean sendFamilyInvitationToExistingUser(InvitationToFamily invitationToFamily) {
+        return sendFamilyInvitation(invitationToFamily);
+    }
+
+    private boolean sendFamilyInvitation(InvitationToFamily invitationToFamily) {
         HttpHeaders headers = defaultPostHTTPHeaders();
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
 
         HttpEntity<InvitationToFamily> httpEntity = new HttpEntity<>(invitationToFamily, headers);
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/family-invitations",
+                gatewayUrl + BASE_PATH + "/family-invitations",
                 HttpMethod.POST,
                 httpEntity, Void.class);
         return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;

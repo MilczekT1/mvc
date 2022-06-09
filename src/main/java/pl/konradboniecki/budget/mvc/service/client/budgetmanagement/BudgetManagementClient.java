@@ -28,7 +28,7 @@ public class BudgetManagementClient {
 
     @Setter
     @Value("${budget.baseUrl.budgetManagement}")
-    private String BASE_URL;
+    private String gatewayUrl;
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -43,7 +43,7 @@ public class BudgetManagementClient {
 
         try {
             ResponseEntity<Budget> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets/" + familyId + "?idType=family",
+                    gatewayUrl + BASE_PATH + "/budgets/" + familyId + "?idType=family",
                     HttpMethod.GET,
                     httpEntity, Budget.class);
             return Optional.ofNullable(responseEntity.getBody());
@@ -59,7 +59,7 @@ public class BudgetManagementClient {
         HttpEntity<Budget> httpEntity = new HttpEntity<>(budget, headers);
         try {
             ResponseEntity<Budget> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/budgets",
+                    gatewayUrl + BASE_PATH + "/budgets",
                     HttpMethod.POST,
                     httpEntity, Budget.class);
             return responseEntity.getBody();

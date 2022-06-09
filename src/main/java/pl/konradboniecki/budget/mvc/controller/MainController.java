@@ -11,7 +11,7 @@ import pl.konradboniecki.budget.mvc.service.ViewTemplate;
 @Controller
 public class MainController {
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @GetMapping("/")
     public ModelAndView mainPage(){
@@ -25,7 +25,7 @@ public class MainController {
 
     @PostMapping("/")
     public ModelAndView showUserHomePageAfterCorrectLogin() {
-        return new ModelAndView("redirect:" + BASE_URL + "/");
+        return new ModelAndView("redirect:" + gatewayUrl + "/");
     }
 
     @GetMapping(value = "/error")

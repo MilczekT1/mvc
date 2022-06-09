@@ -36,7 +36,7 @@ import static pl.konradboniecki.budget.mvc.service.client.budgetmanagement.JarMa
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
-public class JarManagementClientTest {
+class JarManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "budget-management";
     public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
@@ -49,7 +49,7 @@ public class JarManagementClientTest {
 
     @BeforeEach
     void setUp() {
-        jarManagementClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        jarManagementClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class JarManagementClientTest {
         // When:
         Optional<Jar> jar = jarManagementClient.findInBudgetById(budgetId, absentJarId);
         // Then:
-        assertThat(jar.isPresent()).isFalse();
+        assertThat(jar).isNotPresent();
     }
 
     @Test
@@ -71,13 +71,13 @@ public class JarManagementClientTest {
         // When:
         Optional<Jar> jarO = jarManagementClient.findInBudgetById(budgetId, presentJarId);
         // Then:
-        assertThat(jarO.isPresent()).isTrue();
+        assertThat(jarO).isPresent();
         org.junit.jupiter.api.Assertions.assertAll(
                 () -> assertThat(jarO.get().getId()).isEqualTo(presentJarId),
                 () -> assertThat(jarO.get().getBudgetId()).isEqualTo(budgetId),
-                () -> assertThat(jarO.get().getJarName().isEmpty()).isFalse(),
-                () -> assertThat(jarO.get().getCurrentAmount()).isGreaterThan(0L),
-                () -> assertThat(jarO.get().getCapacity()).isGreaterThan(0L),
+                () -> assertThat(jarO.get().getJarName()).isNotEmpty(),
+                () -> assertThat(jarO.get().getCurrentAmount()).isPositive(),
+                () -> assertThat(jarO.get().getCapacity()).isPositive(),
                 () -> assertThat(jarO.get().getStatus()).isEqualTo("IN PROGRESS")
         );
     }
@@ -89,7 +89,7 @@ public class JarManagementClientTest {
         // When:
         List<Jar> listOfJars = jarManagementClient.getAllJarsFromBudgetWithId(budgetWithoutJarsId);
         // Then:
-        assertThat(listOfJars.isEmpty()).isTrue();
+        assertThat(listOfJars).isEmpty();
     }
 
     @Test
@@ -99,19 +99,19 @@ public class JarManagementClientTest {
         // When:
         List<Jar> listOfJars = jarManagementClient.getAllJarsFromBudgetWithId(budgetWithJarsId);
         // Then:
-        assertThat(listOfJars.isEmpty()).isFalse();
+        assertThat(listOfJars).isNotEmpty();
         org.junit.jupiter.api.Assertions.assertAll(
-                () -> assertThat(listOfJars.size()).isEqualTo(2),
+                () -> assertThat(listOfJars).hasSize(2),
                 () -> assertThat(listOfJars.get(0).getId()).isEqualTo("afb2ab6f-7c0d-4ce7-8130-76efea5adc6b"),
                 () -> assertThat(listOfJars.get(0).getBudgetId()).isEqualTo(budgetWithJarsId),
                 () -> assertThat(listOfJars.get(0).getJarName()).isEqualTo("name1"),
-                () -> assertThat(listOfJars.get(0).getCurrentAmount()).isEqualTo(0L),
+                () -> assertThat(listOfJars.get(0).getCurrentAmount()).isZero(),
                 () -> assertThat(listOfJars.get(0).getCapacity()).isEqualTo(3L),
                 () -> assertThat(listOfJars.get(0).getStatus()).isEqualTo("NOT STARTED"),
                 () -> assertThat(listOfJars.get(1).getId()).isEqualTo("b3e66a15-09e5-4a32-b9ec-d8c902bae0ea"),
                 () -> assertThat(listOfJars.get(1).getBudgetId()).isEqualTo(budgetWithJarsId),
                 () -> assertThat(listOfJars.get(1).getJarName()).isEqualTo("name2"),
-                () -> assertThat(listOfJars.get(1).getCurrentAmount()).isEqualTo(0L),
+                () -> assertThat(listOfJars.get(1).getCurrentAmount()).isZero(),
                 () -> assertThat(listOfJars.get(1).getCapacity()).isEqualTo(3L),
                 () -> assertThat(listOfJars.get(1).getStatus()).isEqualTo("NOT STARTED")
         );
@@ -152,8 +152,8 @@ public class JarManagementClientTest {
         Throwable throwable = catchThrowable(
                 () -> jarManagementClient.saveJar(jarToSave, pathBudgetId));
         // Then:
-        assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(HttpClientErrorException.BadRequest.class);
+        assertThat(throwable).isNotNull()
+                .isInstanceOf(HttpClientErrorException.BadRequest.class);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class JarManagementClientTest {
                 () -> assertThat(jar.getBudgetId()).isEqualTo(budgetId),
                 () -> assertThat(jar.getJarName()).isEqualTo("testJarName"),
                 () -> assertThat(jar.getCapacity()).isEqualTo(6L),
-                () -> assertThat(jar.getCurrentAmount()).isEqualTo(0L),
+                () -> assertThat(jar.getCurrentAmount()).isZero(),
                 () -> assertThat(jar.getStatus()).isEqualTo("NOT STARTED")
         );
     }
@@ -192,7 +192,7 @@ public class JarManagementClientTest {
         // When:
         Optional<Jar> jarO = jarManagementClient.updateJar(jarToUpdate, budgetId);
         // Then:
-        assertThat(jarO.isPresent()).isFalse();
+        assertThat(jarO).isNotPresent();
     }
 
     @Test
@@ -209,7 +209,7 @@ public class JarManagementClientTest {
         // When:
         Optional<Jar> jarO = jarManagementClient.updateJar(jarToUpdate, budgetId);
         // Then:
-        assertThat(jarO.isPresent()).isTrue();
+        assertThat(jarO).isPresent();
         org.junit.jupiter.api.Assertions.assertAll(
                 () -> assertThat(jarO.get().getId()).isEqualTo(presentJarId),
                 () -> assertThat(jarO.get().getBudgetId()).isEqualTo(budgetId),

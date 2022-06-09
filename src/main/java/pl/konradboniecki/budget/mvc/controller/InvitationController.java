@@ -35,7 +35,7 @@ public class InvitationController {
     private FamilyManagementClient familyManagementClient;
     private SecurityHelper securityHelper;
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public InvitationController(AccountManagementClient accMgtClient, MailServiceClient mailServiceClient,
@@ -91,7 +91,7 @@ public class InvitationController {
         }
         familyManagementClient.saveInvitation(new Invitation(newMemberEmail, family.getId(), invitationCode, isNewUser));
 
-        return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.FAMILY_HOME_PAGE, "familyObject", family);
+        return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.FAMILY_HOME_PAGE, "familyObject", family);
     }
 
     @PostMapping("/invite-to-family/resend-invitation")
@@ -129,7 +129,7 @@ public class InvitationController {
                 }
             }
         }
-        return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.FAMILY_HOME_PAGE);
+        return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.FAMILY_HOME_PAGE);
     }
 
     @GetMapping("/{familyId}/addMember/{id}/{invitationCode}")
@@ -164,7 +164,7 @@ public class InvitationController {
                 }
             }
         }
-        return new ModelAndView("redirect:" + BASE_URL + "/login");
+        return new ModelAndView("redirect:" + gatewayUrl + "/login");
     }
 
     @PostMapping("/accept-invitation-in-family-creation-form")
@@ -182,7 +182,7 @@ public class InvitationController {
         }
 
         accMgtClient.setFamilyIdInAccountWithId(ownerOpt.get().getFamilyId(), invitee.get().getId());
-        return new ModelAndView("redirect:" + BASE_URL + "/budget/family");
+        return new ModelAndView("redirect:" + gatewayUrl + "/budget/family");
     }
 
     @PostMapping("/remove")
@@ -194,6 +194,6 @@ public class InvitationController {
             log.info("Invitation with id: " + invitationId + " to " + familyInvitation.get().getEmail()
                     + " has been deleted by: " + email);
         }
-        return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.FAMILY_HOME_PAGE);
+        return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.FAMILY_HOME_PAGE);
     }
 }

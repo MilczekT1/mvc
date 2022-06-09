@@ -8,8 +8,8 @@ import lombok.Getter;
  **/
 
 public enum ErrorType {
-    
-    INVALID_ACTIVATION_LINK("invalidActivationLink"),//TODO: ready to remove, extracted
+
+    INVALID_ACTIVATION_LINK("invalidActivationLink"),
     INVALID_INVITATION_LINK("invalidInvitationLink"),
     PROCESSING_EXCEPTION("processingException"),
     NOT_ENOUGH_SPACE_IN_FAMILY("notEnoughSpaceInFamily"),
@@ -17,7 +17,7 @@ public enum ErrorType {
 
     @Getter
     private String errorTypeVarName;
-    
+
     ErrorType(String modelAttrName){
         this.errorTypeVarName = modelAttrName;
     }

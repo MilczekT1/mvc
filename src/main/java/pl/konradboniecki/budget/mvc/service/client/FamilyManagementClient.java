@@ -36,7 +36,7 @@ public class FamilyManagementClient {
     private final RestTemplate restTemplate;
     @Setter
     @Value("${budget.baseUrl.familyManagement}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public FamilyManagementClient(RestTemplate restTemplate) {
@@ -46,10 +46,10 @@ public class FamilyManagementClient {
     public Optional<Family> findFamilyById(String familyId) {
         HttpHeaders headers = defaultGetHTTPHeaders();
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
-        HttpEntity httpEntity = new HttpEntity(headers);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Family> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/families/{familyId}",
+                    gatewayUrl + BASE_PATH + "/families/{familyId}",
                     HttpMethod.GET,
                     httpEntity, Family.class, familyId);
             return Optional.ofNullable(responseEntity.getBody());
@@ -67,7 +67,7 @@ public class FamilyManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Family> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/families/owners/{ownerId}",
+                    gatewayUrl + BASE_PATH + "/families/owners/{ownerId}",
                     HttpMethod.GET,
                     httpEntity, Family.class, ownerId);
             return Optional.ofNullable(responseEntity.getBody());
@@ -86,7 +86,7 @@ public class FamilyManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/families/" + familyId,
+                    gatewayUrl + BASE_PATH + "/families/" + familyId,
                     HttpMethod.DELETE,
                     httpEntity, Void.class);
             return responseEntity.getStatusCode().is2xxSuccessful();
@@ -101,7 +101,7 @@ public class FamilyManagementClient {
         HttpEntity<Family> httpEntity = new HttpEntity<>(family, headers);
         try {
             ResponseEntity<Family> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/families",
+                    gatewayUrl + BASE_PATH + "/families",
                     HttpMethod.POST,
                     httpEntity, Family.class);
             return responseEntity.getBody();
@@ -120,7 +120,7 @@ public class FamilyManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(family, headers);
         try {
             ResponseEntity<Family> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/families/{familyId}",
+                    gatewayUrl + BASE_PATH + "/families/{familyId}",
                     HttpMethod.PUT,
                     httpEntity, Family.class, family.getId());
             return responseEntity.getBody();
@@ -136,7 +136,7 @@ public class FamilyManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/invitations/{invitationId}",
+                    gatewayUrl + BASE_PATH + "/invitations/{invitationId}",
                     HttpMethod.DELETE,
                     httpEntity, Void.class, invitationId);
             return responseEntity.getStatusCode().is2xxSuccessful();
@@ -153,7 +153,7 @@ public class FamilyManagementClient {
         HttpEntity<Invitation> httpEntity = new HttpEntity<>(invitation, headers);
         log.info("Saving invitation with following body: {}", httpEntity.getBody().toString());
         ResponseEntity<Invitation> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/invitations",
+                gatewayUrl + BASE_PATH + "/invitations",
                 HttpMethod.POST,
                 httpEntity, Invitation.class);
         return responseEntity.getBody();
@@ -165,7 +165,7 @@ public class FamilyManagementClient {
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
             ResponseEntity<OASInvitationPage> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/invitations?email={email}",
+                    gatewayUrl + BASE_PATH + "/invitations?email={email}",
                     HttpMethod.GET,
                     httpEntity, OASInvitationPage.class, email);
             return mapToInvitationList(responseEntity.getBody().getItems());
@@ -178,7 +178,7 @@ public class FamilyManagementClient {
     private List<Invitation> mapToInvitationList(List<OASInvitation> oasInvitation) {
         return oasInvitation.stream()
                 .filter(Objects::nonNull)
-                .map((oasInvitation1) ->
+                .map(oasInvitation1 ->
                     new Invitation()
                             .setId(oasInvitation1.getId())
                             .setFamilyId(oasInvitation1.getFamilyId())
@@ -197,7 +197,7 @@ public class FamilyManagementClient {
 
         try {
             ResponseEntity<OASInvitationPage> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/invitations?familyId=" + id,
+                    gatewayUrl + BASE_PATH + "/invitations?familyId=" + id,
                     HttpMethod.GET,
                     httpEntity, OASInvitationPage.class);
             return mapToInvitationList(responseEntity.getBody().getItems());
@@ -214,7 +214,7 @@ public class FamilyManagementClient {
 
         try {
             ResponseEntity<OASInvitationPage> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/invitations?email={email}&familyId={familyId}",
+                    gatewayUrl + BASE_PATH + "/invitations?email={email}&familyId={familyId}",
                     HttpMethod.GET, httpEntity,
                     OASInvitationPage.class, email, familyId);
             return mapToInvitationList(responseEntity.getBody().getItems())
@@ -233,7 +233,7 @@ public class FamilyManagementClient {
 
         try {
             ResponseEntity<Invitation> responseEntity = restTemplate.exchange(
-                    BASE_URL + BASE_PATH + "/invitations/" + id,
+                    gatewayUrl + BASE_PATH + "/invitations/" + id,
                     HttpMethod.GET,
                     httpEntity, Invitation.class);
             return Optional.ofNullable(responseEntity.getBody());

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class AccountFormTest {
+class AccountFormTest {
 
     @Test
     void checkRepeatedPasswordTest(){

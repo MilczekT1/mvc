@@ -2,6 +2,7 @@ package pl.konradboniecki.budget.mvc.model.frontendforms;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -18,7 +19,7 @@ public class AccountForm {
     private String lastName;
 
     @NotEmpty(message = "{registration.emailRequired}")
-    @Pattern(regexp = "(\\w||\\.)+@\\w+.[a-zA-Z]+", message = "{registration.emailRegex}")
+    @Email(message = "{registration.emailRegex}")
     private String email;
 
     @NotEmpty(message = "{registration.passwordRequired}")

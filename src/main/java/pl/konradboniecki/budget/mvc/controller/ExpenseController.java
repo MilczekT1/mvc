@@ -26,7 +26,7 @@ public class ExpenseController {
 
     private BudgetMgtServiceFacade budgetMgtServiceFacade;
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public ExpenseController(BudgetMgtServiceFacade budgetMgtServiceFacade) {
@@ -44,7 +44,7 @@ public class ExpenseController {
     public ModelAndView removeExpenseFromBudget(@ModelAttribute("expenseId") String expenseId,
                                                 @ModelAttribute("budgetId") String budgetId) {
         budgetMgtServiceFacade.deleteExpenseInBudget(expenseId, budgetId);
-        return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.BUDGET);
+        return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.BUDGET);
     }
 
     @PostMapping("/add")
@@ -61,6 +61,6 @@ public class ExpenseController {
         log.debug("Attempting to save expense: {}", expense);
         budgetMgtServiceFacade.saveExpense(expense, expense.getBudgetId());
 
-        return new ModelAndView("redirect:" + BASE_URL + "/" + ViewTemplate.BUDGET);
+        return new ModelAndView("redirect:" + gatewayUrl + "/" + ViewTemplate.BUDGET);
     }
 }

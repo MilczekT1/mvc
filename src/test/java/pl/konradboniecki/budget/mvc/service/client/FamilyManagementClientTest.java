@@ -52,7 +52,7 @@ class FamilyManagementClientTest {
 
     @BeforeEach
     void setUp() {
-        familyManagementClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        familyManagementClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
     @Test
@@ -63,7 +63,7 @@ class FamilyManagementClientTest {
         Optional<Family> familyResponse = familyManagementClient.findFamilyByOwnerId(ownerId);
         // Then:
         org.junit.jupiter.api.Assertions.assertAll(
-                () -> assertThat(familyResponse.isPresent()).isTrue(),
+                () -> assertThat(familyResponse).isPresent(),
                 () -> assertThat(familyResponse.get().getId()).isNotNull(),
                 () -> assertThat(familyResponse.get().getOwnerId()).isNotNull(),
                 () -> assertThat(familyResponse.get().getOwnerId()).isEqualTo(ownerId),
@@ -79,7 +79,7 @@ class FamilyManagementClientTest {
         // When:
         Optional<Family> familyResponse = familyManagementClient.findFamilyByOwnerId(ownerId);
         // Then:
-        assertThat(familyResponse.isPresent()).isFalse();
+        assertThat(familyResponse).isNotPresent();
     }
 
     @Test
@@ -89,7 +89,7 @@ class FamilyManagementClientTest {
         // When:
         Optional<Family> familyResponse = familyManagementClient.findFamilyById(familyId);
         // Then:
-        assertThat(familyResponse.isPresent()).isFalse();
+        assertThat(familyResponse).isNotPresent();
     }
 
     @Test
@@ -100,7 +100,7 @@ class FamilyManagementClientTest {
         Optional<Family> familyResponse = familyManagementClient.findFamilyById(familyId);
         // Then:
         org.junit.jupiter.api.Assertions.assertAll(
-                () -> assertThat(familyResponse.isPresent()).isTrue(),
+                () -> assertThat(familyResponse).isPresent(),
                 () -> assertThat(familyResponse.get().getId()).isNotNull(),
                 () -> assertThat(familyResponse.get().getId()).isEqualTo(familyId),
                 () -> assertThat(familyResponse.get().getOwnerId()).isNotNull(),
@@ -260,7 +260,7 @@ class FamilyManagementClientTest {
         // When:
         List<Invitation> invitations = familyManagementClient.findAllInvitationsByEmail(emailWithoutInvitations);
         // Then:
-        assertThat(invitations.size()).isEqualTo(0);
+        assertThat(invitations.size()).isZero();
     }
 
     @Test
@@ -296,7 +296,7 @@ class FamilyManagementClientTest {
         // When:
         List<Invitation> invitations = familyManagementClient.findAllInvitationsByFamilyId(familyId);
         // Then:
-        assertThat(invitations.size()).isEqualTo(0);
+        assertThat(invitations.size()).isZero();
     }
 
     @Test
@@ -322,29 +322,30 @@ class FamilyManagementClientTest {
         // Then:
         assertThat(invitations.size()).isEqualTo(2);
         assertThat(invitations.contains(firstInvitation)).isTrue();
+        assertThat(invitations.contains(firstInvitation)).isTrue();
         assertThat(invitations.contains(secondInvitation)).isTrue();
     }
 
     @Test
-    public void givenEmailAndFamilyId_whenInvitationNotFound_thenReturnEmpty() {
+    void givenEmailAndFamilyId_whenInvitationNotFound_thenReturnEmpty() {
         // Given:
         String familyId = "89f066a0-23a4-4e2a-aff5-7d7f920afa48";
         String email = "email@without-invitations.com";
         // When:
         Optional<Invitation> invitation = familyManagementClient.findInvitationByEmailAndFamilyId(email, familyId);
         // Then:
-        assertThat(invitation.isPresent()).isFalse();
+        assertThat(invitation).isEmpty();
     }
 
     @Test
-    public void givenEmailAndFamilyId_whenInvitationFound_thenReturnInvitation() {
+    void givenEmailAndFamilyId_whenInvitationFound_thenReturnInvitation() {
         // Given:
         String familyId = "091a6799-bce9-444d-982d-8724d4d31588";
         String email = "email@with-invitations.com";
         // When:
         Optional<Invitation> invitation = familyManagementClient.findInvitationByEmailAndFamilyId(email, familyId);
         // Then:
-        assertThat(invitation.isPresent()).isTrue();
+        assertThat(invitation).isPresent();
         Assertions.assertAll(
                 () -> assertThat(invitation.get().getId()).isNotNull(),
                 () -> assertThat(invitation.get().getEmail()).isEqualTo(email),
@@ -356,7 +357,7 @@ class FamilyManagementClientTest {
     }
 
     @Test
-    public void givenInvitationId_whenNotFound_thenReturnEmpty() {
+    void givenInvitationId_whenNotFound_thenReturnEmpty() {
         // Given:
         String id = "801bcae9-348a-4cd3-9793-7e6234461d5f";
         // When:
@@ -366,13 +367,13 @@ class FamilyManagementClientTest {
     }
 
     @Test
-    public void givenInvitationId_whenFound_thenReturnInvitation() {
+    void givenInvitationId_whenFound_thenReturnInvitation() {
         // Given:
         String id = "0728df5b-7f7f-42f9-8eae-251e86d8360a";
         // When:
         Optional<Invitation> invitation = familyManagementClient.findInvitationById(id);
         // Then:
-        assertThat(invitation.isPresent()).isTrue();
+        assertThat(invitation).isPresent();
         Assertions.assertAll(
                 () -> assertThat(invitation.get().getId()).isNotNull(),
                 () -> assertThat(UUID.fromString(invitation.get().getId())).isNotNull(),

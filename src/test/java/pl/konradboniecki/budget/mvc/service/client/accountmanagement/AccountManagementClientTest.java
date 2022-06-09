@@ -35,8 +35,7 @@ import static pl.konradboniecki.budget.mvc.service.client.accountmanagement.Acco
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
-@SuppressWarnings("OptionalGetWithoutIsPresent")
-public class AccountManagementClientTest {
+class AccountManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "account-management";
     public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
@@ -49,13 +48,13 @@ public class AccountManagementClientTest {
 
     @BeforeEach
     void setUp() {
-        accountManagementClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        accountManagementClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
     @Test
     void whenFoundAccountById_thenHandle200Response() {
         Optional<Account> accountResponse = accountManagementClient.findAccountById("ead1f1a2-d178-4204-9ec1-b78c5bf6402c");
-        assertThat(accountResponse.isPresent()).isTrue();
+        assertThat(accountResponse).isPresent();
 
         Account acc = accountResponse.get();
         org.junit.jupiter.api.Assertions.assertAll(
@@ -71,13 +70,13 @@ public class AccountManagementClientTest {
     @Test
     void whenNotFoundAccountById_thenHandle404Response() {
         Optional<Account> accountResponse = accountManagementClient.findAccountById("cc2871a2-e6b1-4490-8840-9d50502074b0");
-        assertThat(accountResponse.isPresent()).isFalse();
+        assertThat(accountResponse).isNotPresent();
     }
 
     @Test
     void whenFoundAccountByEmail_thenHandle200Response() {
         Optional<Account> accountResponse = accountManagementClient.findAccountByEmail("existing_email@find_by_mail.com");
-        assertThat(accountResponse.isPresent()).isTrue();
+        assertThat(accountResponse).isPresent();
 
         Account acc = accountResponse.get();
         org.junit.jupiter.api.Assertions.assertAll(
@@ -93,7 +92,7 @@ public class AccountManagementClientTest {
     @Test
     void whenNotFoundAccountByEmail_thenHandle404Response() {
         Optional<Account> accountResponse = accountManagementClient.findAccountByEmail("not_existing_email@mail.com");
-        assertThat(accountResponse.isPresent()).isFalse();
+        assertThat(accountResponse).isNotPresent();
     }
 
     @Test
