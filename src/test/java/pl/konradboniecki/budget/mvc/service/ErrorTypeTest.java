@@ -6,10 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class ErrorTypeTest {
+class ErrorTypeTest {
 
     @Test
-    public void testDescription(){
+    void testDescription(){
 
         Assertions.assertAll(
             ()-> Assertions.assertEquals("alreadyInFamily", ErrorType.ALREADY_IN_FAMILY.getErrorTypeVarName()),

@@ -8,10 +8,11 @@ import pl.konradboniecki.budget.mvc.model.frontendforms.JarCreationForm;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class JarTest {
+
+class JarTest {
 
     @Test
-    public void constructorTest(){
+    void constructorTest(){
         String jarName = "testName";
         Long capacity = 15L;
 

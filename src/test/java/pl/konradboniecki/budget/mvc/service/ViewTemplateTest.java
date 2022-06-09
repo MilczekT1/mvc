@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ViewTemplateTest {
+class ViewTemplateTest {
 
     @Test
     void viewTemplateTest() {

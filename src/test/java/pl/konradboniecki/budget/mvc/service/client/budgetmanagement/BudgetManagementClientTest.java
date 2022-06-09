@@ -35,7 +35,7 @@ import static pl.konradboniecki.budget.mvc.service.client.budgetmanagement.Budge
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
-public class BudgetManagementClientTest {
+class BudgetManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "budget-management";
     public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
@@ -48,7 +48,7 @@ public class BudgetManagementClientTest {
 
     @BeforeEach
     void setUp() {
-        budgetManagementClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        budgetManagementClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
 
@@ -62,8 +62,8 @@ public class BudgetManagementClientTest {
         Throwable throwable = catchThrowable(
                 () -> budgetManagementClient.saveBudget(budgetToSave));
         // Then:
-        assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(InternalServerErrorException.class);
+        assertThat(throwable).isNotNull()
+                .isInstanceOf(InternalServerErrorException.class);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class BudgetManagementClientTest {
         // When:
         Optional<Budget> budgetOptional = budgetManagementClient.findBudgetByFamilyId(presentFamilyId);
         // Then:
-        assertThat(budgetOptional.isPresent()).isTrue();
+        assertThat(budgetOptional).isPresent();
         Budget budget = budgetOptional.get();
         assertThat(UUID.fromString(budget.getId())).isNotNull();
         assertThat(budget.getFamilyId()).isEqualTo(presentFamilyId);
@@ -103,6 +103,6 @@ public class BudgetManagementClientTest {
         // When:
         Optional<Budget> budgetOptional = budgetManagementClient.findBudgetByFamilyId(absentFamilyId);
         // Then:
-        assertThat(budgetOptional.isPresent()).isFalse();
+        assertThat(budgetOptional).isNotPresent();
     }
 }

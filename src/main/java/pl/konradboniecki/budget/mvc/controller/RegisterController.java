@@ -49,7 +49,7 @@ public class RegisterController {
         if (!accOpt.isPresent()){
             Account accFromForm = new Account(newAccountForm);
             accMgtClient.saveAccount(accFromForm);
-            accFromForm = accMgtClient.findAccountByEmail(accFromForm.getEmail()).get();
+            accFromForm = accMgtClient.findAccountByEmail(accFromForm.getEmail()).orElseThrow();
 
             String activationCode = accMgtClient.createActivationCodeForAccount(accFromForm.getId());
             return sendEmailWithActivationCode(activationCode,accFromForm);

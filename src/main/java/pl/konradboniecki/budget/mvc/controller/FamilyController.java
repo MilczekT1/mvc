@@ -38,7 +38,7 @@ public class FamilyController {
     private AccountManagementClient accMgtClient;
     private FamilyManagementClient familyManagementClient;
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public FamilyController(BudgetMgtServiceFacade budgetMgtServiceFacade,
@@ -110,14 +110,14 @@ public class FamilyController {
         family.setBudgetId(budget.getId());
         familyManagementClient.updateFamily(family);
 
-        return new ModelAndView("redirect:" + BASE_URL + "/budget/family");
+        return new ModelAndView("redirect:" + gatewayUrl + "/budget/family");
     }
 
     @PostMapping("/remove-family")
     public ModelAndView removeFamily(@RequestParam("familyId") String id) {
         if (familyManagementClient.findFamilyById(id).isPresent()) {
             familyManagementClient.deleteFamilyById(id);
-            return new ModelAndView("redirect:" + BASE_URL + "/budget/family");
+            return new ModelAndView("redirect:" + gatewayUrl + "/budget/family");
         } else {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "family with id:" + id + " not found.");
         }

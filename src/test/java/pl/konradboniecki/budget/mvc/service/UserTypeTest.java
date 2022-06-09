@@ -6,10 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class UserTypeTest {
+class UserTypeTest {
 
     @Test
-    public void testDescription(){
+    void testDescription(){
 
         Assertions.assertAll(
                 ()-> Assertions.assertEquals("USER", UserType.USER.getRoleName()),

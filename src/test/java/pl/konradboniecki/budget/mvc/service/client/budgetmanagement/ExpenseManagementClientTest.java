@@ -37,7 +37,7 @@ import static pl.konradboniecki.budget.mvc.service.client.budgetmanagement.Expen
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
-public class ExpenseManagementClientTest {
+class ExpenseManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "budget-management";
     public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
@@ -49,7 +49,7 @@ public class ExpenseManagementClientTest {
 
     @BeforeEach
     void setUp() {
-        expenseManagementClient.setBASE_URL("http://localhost:" + stubRunnerPort);
+        expenseManagementClient.setGatewayUrl("http://localhost:" + stubRunnerPort);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ExpenseManagementClientTest {
         List<Expense> expenseList = expenseManagementClient.getAllExpensesFromBudgetWithId(budgetId);
         // Then:
         assertThat(expenseList).isNotNull();
-        assertThat(expenseList.size()).isEqualTo(2);
+        assertThat(expenseList).hasSize(2);
         Expense firstElement = expenseList.get(0);
         Expense secondElement = expenseList.get(1);
         Assertions.assertAll(
@@ -85,7 +85,7 @@ public class ExpenseManagementClientTest {
         List<Expense> expenseList = expenseManagementClient.getAllExpensesFromBudgetWithId(budgetId);
         // Then:
         assertThat(expenseList).isNotNull();
-        assertThat(expenseList.size()).isEqualTo(0);
+        assertThat(expenseList.size()).isZero();
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ExpenseManagementClientTest {
         // When:
         Throwable throwable = catchThrowable(() -> expenseManagementClient.saveExpense(expense, budgetIdInPath));
         // Then:
-        assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(BadRequestException.class);
+        assertThat(throwable).isNotNull()
+                .isInstanceOf(BadRequestException.class);
     }
 }

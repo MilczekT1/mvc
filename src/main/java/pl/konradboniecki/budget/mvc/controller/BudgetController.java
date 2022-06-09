@@ -29,7 +29,7 @@ public class BudgetController {
     private FamilyManagementClient familyManagementClient;
     private SecurityHelper securityHelper;
     @Value("${budget.baseUrl.gateway}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public BudgetController(BudgetMgtServiceFacade budgetMgtServiceFacade,
@@ -45,11 +45,11 @@ public class BudgetController {
         Account acc = securityHelper.getLoggedAccountByEmail(securityHelper.getEmailOfLoggedUser());
         if (acc.getFamilyId() == null) {
             log.info("Family not found for email {}, redirecting to form ", acc.getEmail());
-            return new ModelAndView("redirect:" + BASE_URL + "/budget/family");
+            return new ModelAndView("redirect:" + gatewayUrl + "/budget/family");
         } else {
             // TODO: Possible family absence
             Optional<Family> family = familyManagementClient.findFamilyById(acc.getFamilyId());
-            log.info("showing budget for family: {}", family.get());
+            log.info("showing budget for family: {}", family.orElseThrow());
             List<Jar> jarList = budgetMgtServiceFacade.getAllJarsFromBudgetWithId(family.get().getBudgetId());
             List<Expense> expenseList = budgetMgtServiceFacade.getAllExpensesFromBudgetWithId(family.get().getBudgetId());
 

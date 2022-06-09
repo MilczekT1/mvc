@@ -23,7 +23,7 @@ public class MailServiceClient {
     private final RestTemplate restTemplate;
     @Setter
     @Value("${budget.baseUrl.mail}")
-    private String BASE_URL;
+    private String gatewayUrl;
 
     @Autowired
     public MailServiceClient(RestTemplate restTemplate) {
@@ -39,7 +39,7 @@ public class MailServiceClient {
         HttpEntity<SignUpConfirmation> httpEntity = new HttpEntity<>(signUpConfirmation, headers);
 
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/account-activations",
+                gatewayUrl + BASE_PATH + "/account-activations",
                 HttpMethod.POST,
                 httpEntity, Void.class);
         return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;
@@ -51,7 +51,7 @@ public class MailServiceClient {
         HttpEntity<InvitationToFamily> httpEntity = new HttpEntity<>(invitationToFamily, headers);
 
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/family-invitations",
+                gatewayUrl + BASE_PATH + "/family-invitations",
                 HttpMethod.POST,
                 httpEntity, Void.class);
         return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;
@@ -63,7 +63,7 @@ public class MailServiceClient {
 
         HttpEntity<InvitationToFamily> httpEntity = new HttpEntity<>(invitationToFamily, headers);
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                BASE_URL + BASE_PATH + "/family-invitations",
+                gatewayUrl + BASE_PATH + "/family-invitations",
                 HttpMethod.POST,
                 httpEntity, Void.class);
         return responseEntity.getStatusCode() == HttpStatus.NO_CONTENT;

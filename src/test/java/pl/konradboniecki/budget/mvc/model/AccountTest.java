@@ -10,7 +10,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class AccountTest {
+class AccountTest {
 
     @Test
     void testIfHasFamily() {
