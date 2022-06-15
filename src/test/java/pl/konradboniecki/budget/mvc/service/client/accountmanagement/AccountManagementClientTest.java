@@ -31,7 +31,7 @@ import static pl.konradboniecki.budget.mvc.service.client.accountmanagement.Acco
         }
 )
 @AutoConfigureStubRunner(
-        repositoryRoot = "http://161.97.176.83:5001/repository/maven-public/",
+        repositoryRoot = "http://konradboniecki.com.pl:5001/repository/maven-public/",
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
@@ -39,7 +39,7 @@ import static pl.konradboniecki.budget.mvc.service.client.accountmanagement.Acco
 public class AccountManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "account-management";
-    public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
+    public static final String STUB_VERSION = "0.8.0-SNAPSHOT";
 
     @StubRunnerPort(STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID)
     private Integer stubRunnerPort;
@@ -76,7 +76,7 @@ public class AccountManagementClientTest {
 
     @Test
     void whenFoundAccountByEmail_thenHandle200Response() {
-        Optional<Account> accountResponse = accountManagementClient.findAccountByEmail("existing_email@find_by_mail.com");
+        Optional<Account> accountResponse = accountManagementClient.findAccountByEmail("existing_email@find-by-mail.com");
         assertThat(accountResponse.isPresent()).isTrue();
 
         Account acc = accountResponse.get();
