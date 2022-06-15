@@ -31,14 +31,14 @@ import static pl.konradboniecki.budget.mvc.service.client.budgetmanagement.Budge
         }
 )
 @AutoConfigureStubRunner(
-        repositoryRoot = "http://161.97.176.83:5001/repository/maven-public/",
+        repositoryRoot = "http://konradboniecki.com.pl:5001/repository/maven-public/",
         ids = {STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID + ":" + STUB_VERSION + ":stubs"},
         stubsMode = REMOTE
 )
 class BudgetManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "budget-management";
-    public static final String STUB_VERSION = "0.7.0-SNAPSHOT";
+    public static final String STUB_VERSION = "0.8.0-SNAPSHOT";
 
     @StubRunnerPort(STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID)
     private Integer stubRunnerPort;
