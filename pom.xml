@@ -11,7 +11,7 @@
 
     <groupId>pl.konradboniecki.budget</groupId>
     <artifactId>mvc</artifactId>
-    <version>0.8.0</version>
+    <version>0.9.0-SNAPSHOT</version>
 
     <properties>
         <jacoco.classes.maxMissed>100</jacoco.classes.maxMissed>
