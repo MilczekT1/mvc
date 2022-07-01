@@ -43,7 +43,7 @@ import static pl.konradboniecki.budget.mvc.service.client.FamilyManagementClient
 class FamilyManagementClientTest {
     public static final String STUB_GROUP_ID = "pl.konradboniecki.budget";
     public static final String STUB_ARTIFACT_ID = "family-management";
-    public static final String STUB_VERSION = "0.8.0-SNAPSHOT";
+    public static final String STUB_VERSION = "0.9.0-SNAPSHOT";
 
     @StubRunnerPort(STUB_GROUP_ID + ":" + STUB_ARTIFACT_ID)
     private Integer stubRunnerPort;
