@@ -92,7 +92,7 @@ public class AccountManagementClient {
                     gatewayUrl + BASE_PATH + "/accounts/{accountId}/activation-codes",
                     HttpMethod.POST,
                     httpEntity, JsonNode.class, accountId);
-            return responseEntity.getBody().path("activationCode").asText();
+            return responseEntity.getBody().path("activationCodeValue").asText();
         } catch (HttpClientErrorException.NotFound e) {
             log.error("Error during activation code creation. Account with id {} not found.", accountId);
             throw e;
