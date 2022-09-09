@@ -9,6 +9,20 @@
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
     </servers>
+    <mirrors>
+        <mirror>
+            <id>my-nexus-mirror</id>
+            <name>mirrorName2</name>
+            <url>http://${env.NEXUS_ADDRESS}/repository/maven-public</url>
+            <mirrorOf>external:http:*</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>maven-central-mirror</id>
+            <name>mirrorName1</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <mirrorOf>*, external:http:*</mirrorOf>
+        </mirror>
+    </mirrors>
     <profiles>
         <profile>
             <id>nexusOnPremise</id>

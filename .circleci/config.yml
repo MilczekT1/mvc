@@ -6,9 +6,9 @@ deployment_branch_filter: &deployment_branch_filter
         - develop
         - /feature.*/
         - /bugfix.*/
-docker_java_11: &docker_java_11
+docker_java_17: &docker_java_17
   docker:
-    - image: cimg/openjdk:11.0.8-node
+    - image: cimg/openjdk:17.0.2-node
   environment:
     JVM_OPTS: -Xmx3200m
     TERM: dumb
@@ -37,7 +37,7 @@ workflows:
                 - develop
 jobs:
   build:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/repo
     steps:
       - setup_remote_docker:
@@ -90,7 +90,7 @@ jobs:
           paths:
             - shared_workspace
   sonar-scanning:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/repo
     steps:
       - checkout
@@ -101,7 +101,7 @@ jobs:
           name: Analyze on SonarCloud
           command: mvn verify sonar:sonar -s .circleci/settings.xml
   deploy-to-nexus:
-    <<: *docker_java_11
+    <<: *docker_java_17
     working_directory: ~/repo
     steps:
       - checkout
