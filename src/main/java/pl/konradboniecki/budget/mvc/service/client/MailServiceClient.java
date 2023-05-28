@@ -13,7 +13,9 @@ import pl.konradboniecki.budget.mvc.model.dto.InvitationToFamily;
 import pl.konradboniecki.budget.mvc.model.dto.SignUpConfirmation;
 import pl.konradboniecki.chassis.tools.ChassisSecurityBasicAuthHelper;
 
-import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
+import static java.util.Collections.singletonList;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 
 @Slf4j
 @Service
@@ -31,7 +33,9 @@ public class MailServiceClient {
     }
 
     public boolean sendSignUpConfirmation(Account account, String activationCode) throws HttpStatusCodeException {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         SignUpConfirmation signUpConfirmation = new SignUpConfirmation()
                 .setAccount(account)
@@ -54,7 +58,9 @@ public class MailServiceClient {
     }
 
     private boolean sendFamilyInvitation(InvitationToFamily invitationToFamily) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
 
         HttpEntity<InvitationToFamily> httpEntity = new HttpEntity<>(invitationToFamily, headers);

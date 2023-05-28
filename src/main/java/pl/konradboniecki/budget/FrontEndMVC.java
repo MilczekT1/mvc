@@ -1,11 +1,11 @@
 package pl.konradboniecki.budget;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+import pl.konradboniecki.chassis.ChassisApplication;
 
-@SpringBootApplication(scanBasePackages = {"pl.konradboniecki"})
+@ChassisApplication
 public class FrontEndMVC {
 
 	public static void main(String[] args) {

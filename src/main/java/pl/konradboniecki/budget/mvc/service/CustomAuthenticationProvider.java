@@ -19,7 +19,7 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 @Slf4j
 @Component
 @Scope(scopeName = SCOPE_SINGLETON)
-public class SpringAuthenticationProvider implements AuthenticationProvider {
+public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private AccountManagementClient accountManagementClient;
