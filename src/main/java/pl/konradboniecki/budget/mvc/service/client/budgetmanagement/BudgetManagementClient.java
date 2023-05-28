@@ -4,10 +4,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -18,8 +15,9 @@ import pl.konradboniecki.chassis.tools.ChassisSecurityBasicAuthHelper;
 
 import java.util.Optional;
 
-import static pl.konradboniecki.chassis.tools.RestTools.defaultGetHTTPHeaders;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
+import static java.util.Collections.singletonList;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 
 @Slf4j
 @Service
@@ -37,7 +35,8 @@ public class BudgetManagementClient {
     }
 
     public Optional<Budget> findBudgetByFamilyId(String familyId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
@@ -54,7 +53,9 @@ public class BudgetManagementClient {
     }
 
     public Budget saveBudget(Budget budget) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<Budget> httpEntity = new HttpEntity<>(budget, headers);
         try {

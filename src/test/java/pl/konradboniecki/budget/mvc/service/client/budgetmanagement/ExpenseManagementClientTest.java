@@ -29,7 +29,8 @@ import static pl.konradboniecki.budget.mvc.service.client.budgetmanagement.Expen
 @SpringBootTest(
         webEnvironment = WebEnvironment.RANDOM_PORT,
         properties = {
-                "stubrunner.cloud.loadbalancer.enabled=false"
+                "stubrunner.cloud.loadbalancer.enabled=false",
+                "stubrunner.cloud.delegate.enabled=true"
         }
 )
 @AutoConfigureStubRunner(

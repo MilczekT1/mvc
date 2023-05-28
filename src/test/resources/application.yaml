@@ -6,11 +6,11 @@ budget:
     familyManagement: "http://localhost:10000"
     mail: "http://localhost:10000"
 spring:
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     config:
       enabled: false
-  zipkin:
-    enabled: false
   security:
     user:
       name: "testUserName"

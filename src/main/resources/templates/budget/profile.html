@@ -41,14 +41,16 @@
         </ul>
       </div>
       <div class="d-flex flex-row-reverse bd-highlight">
-        <div class="p-2 bd-highlight">[[${#httpServletRequest.remoteUser}]]</div>
+        <div class="p-2 bd-highlight">
+          <p th:inline="text" sec:authentication="name"></p>
+        </div>
       </div>
     </div>
   </nav>
 
   <p>Here will be some user profile data.</p>
   <span sec:authorize="isAuthenticated()">
-    <p th:inline="text">[[${#httpServletRequest.remoteUser}]]</p>
+    <p th:inline="text" sec:authentication="name"></p>
   </span>
   <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out" class="btn btn-outline-primary">

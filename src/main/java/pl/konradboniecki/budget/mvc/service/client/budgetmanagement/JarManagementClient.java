@@ -20,8 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultGetHTTPHeaders;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 @Service
@@ -39,7 +38,8 @@ public class JarManagementClient {
     }
 
     public Optional<Jar> findInBudgetById(String budgetId, String jarId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<Jar> httpEntity = new HttpEntity<>(headers);
         try {
@@ -55,7 +55,8 @@ public class JarManagementClient {
     }
 
     public List<Jar> getAllJarsFromBudgetWithId(String budgetId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -106,7 +107,9 @@ public class JarManagementClient {
     }
 
     public Jar saveJar(Jar jar, String budgetId) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<Jar> httpEntity = new HttpEntity<>(jar, headers);
 

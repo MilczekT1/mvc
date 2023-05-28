@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultGetHTTPHeaders;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
 
 @Slf4j
 @Service
@@ -44,7 +42,8 @@ public class FamilyManagementClient {
     }
 
     public Optional<Family> findFamilyById(String familyId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -62,7 +61,8 @@ public class FamilyManagementClient {
 
     @Deprecated(forRemoval = true)
     public Optional<Family> findFamilyByOwnerId(String ownerId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -96,7 +96,9 @@ public class FamilyManagementClient {
     }
 
     public Family saveFamily(Family family) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<Family> httpEntity = new HttpEntity<>(family, headers);
         try {
@@ -148,7 +150,9 @@ public class FamilyManagementClient {
     }
 
     public Invitation saveInvitation(Invitation invitation) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<Invitation> httpEntity = new HttpEntity<>(invitation, headers);
         log.info("Saving invitation with following body: {}", httpEntity.getBody().toString());
@@ -160,7 +164,8 @@ public class FamilyManagementClient {
     }
 
     public List<Invitation> findAllInvitationsByEmail(String email) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -191,7 +196,8 @@ public class FamilyManagementClient {
     }
 
     public List<Invitation> findAllInvitationsByFamilyId(String id) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
@@ -208,7 +214,8 @@ public class FamilyManagementClient {
     }
 
     public Optional<Invitation> findInvitationByEmailAndFamilyId(String email, String familyId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
@@ -227,7 +234,8 @@ public class FamilyManagementClient {
     }
 
     public Optional<Invitation> findInvitationById(String id) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
