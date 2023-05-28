@@ -22,8 +22,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultGetHTTPHeaders;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 @Service
@@ -42,7 +41,8 @@ public class ExpenseManagementClient {
     }
 
     public List<Expense> getAllExpensesFromBudgetWithId(String budgetId) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -72,7 +72,9 @@ public class ExpenseManagementClient {
     }
 
     public Expense saveExpense(Expense ex, String budgetId) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<Expense> httpEntity = new HttpEntity<>(ex, headers);
         try {

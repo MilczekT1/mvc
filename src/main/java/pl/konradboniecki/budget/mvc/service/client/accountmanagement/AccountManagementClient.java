@@ -16,8 +16,7 @@ import pl.konradboniecki.chassis.tools.ChassisSecurityBasicAuthHelper;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultGetHTTPHeaders;
-import static pl.konradboniecki.chassis.tools.RestTools.defaultPostHTTPHeaders;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 @Service
@@ -35,7 +34,8 @@ public class AccountManagementClient {
     }
 
     public Optional<Account> findAccountById(String id) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -51,7 +51,8 @@ public class AccountManagementClient {
     }
 
     public Optional<Account> findAccountByEmail(String email) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
@@ -67,7 +68,9 @@ public class AccountManagementClient {
     }
 
     public Account saveAccount(Account accountToSave) throws ResourceConflictException {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(accountToSave, headers);
         try {
@@ -83,7 +86,9 @@ public class AccountManagementClient {
     }
 
     public String createActivationCodeForAccount(String accountId) {
-        HttpHeaders headers = defaultPostHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        headers.setAccept(singletonList(APPLICATION_JSON));
         headers.set("id", accountId);
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -100,7 +105,8 @@ public class AccountManagementClient {
     }
 
     public Boolean checkIfPasswordIsCorrect(String accountId, String hashedPassword) {
-        HttpHeaders headers = defaultGetHTTPHeaders();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         headers.set("password", hashedPassword);
         headers.setBasicAuth(ChassisSecurityBasicAuthHelper.getEncodedCredentials());
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);

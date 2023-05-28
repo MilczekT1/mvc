@@ -6,7 +6,7 @@
     <parent>
         <groupId>pl.konradboniecki</groupId>
         <artifactId>chassis-parent</artifactId>
-        <version>0.3.1</version>
+        <version>0.3.5</version>
     </parent>
 
     <groupId>pl.konradboniecki.budget</groupId>
@@ -42,9 +42,13 @@
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf.extras</groupId>-->
+<!--            <artifactId>thymeleaf-extras-springsecurity5</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
 
         <!--Springboot starters-->
