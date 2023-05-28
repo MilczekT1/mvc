@@ -31,11 +31,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String email = authentication.getName().toLowerCase();
         String password = authentication.getCredentials().toString();
         String hashedTypedPassword = hashGenerator.hashPassword(password);
+        log.info("Attempting to authenticate: {}", email);
 
         if(authenticationIsCorrect(email, hashedTypedPassword)){
+            log.info("Authenticated: {}", email);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return new UsernamePasswordAuthenticationToken(email, hashedTypedPassword, authentication.getAuthorities());
         } else {
+            log.info("Failed to authenticate: {}", email);
             return null;
         }
     }
