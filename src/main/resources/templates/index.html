@@ -16,7 +16,6 @@
   </span>
   <p th:text="#{index.greeting}"></p>
   <span sec:authorize="isAuthenticated()">
-<!--        <p th:inline="text">[[${#httpServletRequest.remoteUser}]]</p>-->
         <p th:inline="text" sec:authentication="name"></p>
   </span>
   <hr>
